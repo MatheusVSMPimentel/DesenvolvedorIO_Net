@@ -1,0 +1,8 @@
+bin/
+obj/
+
+/WebApplicationMVC/wwwroot/*
+.idea/*
+/packages/
+riderModule.iml
+/_ReSharper.Caches/

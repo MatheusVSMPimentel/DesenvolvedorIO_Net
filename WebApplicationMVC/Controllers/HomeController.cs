@@ -15,17 +15,33 @@ namespace WebApplicationMVC.Controllers
 
         public HomeController(ILogger<HomeController> logger)
         {
+            
             _logger = logger;
         }
 
         public IActionResult Index()
         {
+            Filme filme = new Filme
+            {
+                Avaliacao = 10, Custo = 100000000000000000, Genero = "4asdfe", Titulo = "Green Day",
+                DataLancamento = DateTime.Now, Oscar = true
+            };
+            //return RedirectToAction("Privacys", filme);
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Privacys(Filme filme)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                Console.Write("IsValid");
+            }
+
+            foreach (var error in ModelState.Values.SelectMany(m => m.Errors))
+            {
+                Console.WriteLine(error.ErrorMessage);
+            }
+            return View("Privacy");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

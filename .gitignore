@@ -1,7 +1,8 @@
 bin/
 obj/
-
-/WebApplicationMVC/wwwroot/*
+.vs/
+wwwroot/*
+!wwwroot/bundle/*
 .idea/*
 /packages/
 riderModule.iml

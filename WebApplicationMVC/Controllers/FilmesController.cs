@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using WebApplicationMVC.Models;
 
 namespace WebApplicationMVC.Controllers
 {
+    [Authorize]
     public class FilmesController : Controller
     {
         private readonly GestaoDbContext _context;
@@ -18,7 +20,7 @@ namespace WebApplicationMVC.Controllers
         {
             _context = context;
         }
-    
+        [AllowAnonymous]
         // GET: Filmes
         public async Task<IActionResult> Index()
         {

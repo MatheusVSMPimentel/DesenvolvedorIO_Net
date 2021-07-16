@@ -5,11 +5,14 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
+using WebApplicationMVC.Areas.Identity.Data;
 using WebApplicationMVC.Data;
 
 namespace WebApplicationMVC
@@ -33,9 +36,16 @@ namespace WebApplicationMVC
                 options.AreaViewLocationFormats.Add("Modulos/{2}/View/Shared/{0}.cshtml");
                 options.AreaViewLocationFormats.Add("View/Shared/{0}.cshtml");
             });*/
+            services.AddDbContext<LoginGestaoDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("LoginGestaoConnection")));
+            services.AddDefaultIdentity<IdentityUser>() //options => options.SignIn.RequireConfirmedAccount = true
+                .AddDefaultUI()
+                .AddEntityFrameworkStores<LoginGestaoDbContext>();
             services.AddDbContext<GestaoDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("GestaoDbContext")));
             services.AddControllersWithViews();
+            services.AddRazorPages();
+
             services.AddTransient<IPedidosRepository, PedidosRepository>();
         }
 
@@ -58,22 +68,23 @@ namespace WebApplicationMVC
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             //app.UseMiddleware<MeuMiddleware>();
-            app.useMeuMiddleware();
+            //app.useMeuMiddleware();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
                 endpoints.MapAreaControllerRoute("AreaGestaoFilmes", "GestaoFilmes",
                     "{controller=Adicionar}/{action=Index}/");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }

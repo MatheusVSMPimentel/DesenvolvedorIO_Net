@@ -12,9 +12,9 @@ namespace WebApplicationMVC.Controllers
 {
     public class FilmesController : Controller
     {
-        private readonly WebApplicationMVCContext _context;
+        private readonly GestaoDbContext _context;
 
-        public FilmesController(WebApplicationMVCContext context)
+        public FilmesController(GestaoDbContext context)
         {
             _context = context;
         }
@@ -22,7 +22,7 @@ namespace WebApplicationMVC.Controllers
         // GET: Filmes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Filme.ToListAsync());
+            return View(await _context.Filmes.ToListAsync());
         }
 
         // GET: Filmes/Details/5
@@ -33,7 +33,7 @@ namespace WebApplicationMVC.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.Filme
+            var filme = await _context.Filmes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -73,7 +73,7 @@ namespace WebApplicationMVC.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.Filme.FindAsync(id);
+            var filme = await _context.Filmes.FindAsync(id);
             if (filme == null)
             {
                 return NotFound();
@@ -124,7 +124,7 @@ namespace WebApplicationMVC.Controllers
                 return NotFound();
             }
 
-            var filme = await _context.Filme
+            var filme = await _context.Filmes
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (filme == null)
             {
@@ -139,15 +139,15 @@ namespace WebApplicationMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var filme = await _context.Filme.FindAsync(id);
-            _context.Filme.Remove(filme);
+            var filme = await _context.Filmes.FindAsync(id);
+            _context.Filmes.Remove(filme);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool FilmeExists(int id)
         {
-            return _context.Filme.Any(e => e.Id == id);
+            return _context.Filmes.Any(e => e.Id == id);
         }
     }
 }

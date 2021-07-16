@@ -33,10 +33,9 @@ namespace WebApplicationMVC
                 options.AreaViewLocationFormats.Add("Modulos/{2}/View/Shared/{0}.cshtml");
                 options.AreaViewLocationFormats.Add("View/Shared/{0}.cshtml");
             });*/
+            services.AddDbContext<GestaoDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("GestaoDbContext")));
             services.AddControllersWithViews();
-    
-            services.AddDbContext<WebApplicationMVCContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("WebApplicationMVCContext")));
             services.AddTransient<IPedidosRepository, PedidosRepository>();
         }
 

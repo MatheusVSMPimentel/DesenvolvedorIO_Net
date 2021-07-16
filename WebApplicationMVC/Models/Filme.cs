@@ -27,8 +27,13 @@ namespace WebApplicationMVC.Models
         public string Genero { get; set; }
         [Required(ErrorMessage = "O campo Custo precisa está preenchido. Verifique e tente novamente"), Display(Name = "Custo de Filmagem"),
          Column(TypeName = "decimal(18,2)"),
-         Range(1000.00, Double.MaxValue, ErrorMessage = "Valor do campo não pode ser menor que -100.000.000.000,00 nem maior que a memoria reservada para ele: 1.79769313486232E+308D")]
+         Range(1000.00, Double.MaxValue, ErrorMessage = "Valor do campo não pode ser menor que 1000.00 nem maior que a memoria reservada para ele: 1.79769313486232E+308D")]
         public decimal Custo { get; set; }
+        [Required(ErrorMessage = "O campo do Valor para locação do filme precisa está preenchido. Verifique e tente novamente"), Display(Name = "Custo de Filmagem"),
+         Column(TypeName = "decimal(18,2)"),
+         Range(3.00, 200, ErrorMessage = "Valor do campo não pode ser menor que 3,00 nem maior que a memoria reservada para ele: 200")]
+        public decimal AluguelSemana { get; set; }
+        
         [RegularExpression(@"^[0-5]*$")]
         public int Avaliacao { get; set; }
         //public List<string> Comentarios { get; set; }

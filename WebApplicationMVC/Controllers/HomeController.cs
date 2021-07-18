@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WebApplicationMVC.Extension;
 using WebApplicationMVC.Models;
 
 namespace WebApplicationMVC.Controllers
@@ -27,11 +28,12 @@ namespace WebApplicationMVC.Controllers
                 Avaliacao = 10, Custo = 100000000000000000, Genero = "4asdfe", Titulo = "Green Day",
                 DataLancamento = DateTime.Now, Oscar = true
             };
+            _logger.LogDebug("Hello world from .NET Core 5.x!");
             //return RedirectToAction("Privacys", filme);
             return View();
         }
 
-        [Authorize(Roles = "Adm")]
+        [Authorize(Roles = "Admin, Gestor")]
         public IActionResult Privacys(Filme filme)
         {
             if (ModelState.IsValid)
@@ -43,6 +45,26 @@ namespace WebApplicationMVC.Controllers
             {
                 Console.WriteLine(error.ErrorMessage);
             }
+            return View("Privacy");
+        }
+        [Authorize(Policy = "PodeVer")]
+        public IActionResult SecretClaim()
+        {
+            return View("Privacy");
+        }
+        [Authorize(Policy = "PodeAlugar")]
+        public IActionResult SecretClaimPermissao()
+        {
+            return View("Privacy");
+        }
+        [ClaimsAuthorizeAtrribute("Filmes","Ver")]
+        public IActionResult SecretCustom()
+        {
+            return View("Privacy");
+        }
+        public IActionResult Erro()
+        {
+            throw new Exception("Erro ocorrido e, trace:");
             return View("Privacy");
         }
 

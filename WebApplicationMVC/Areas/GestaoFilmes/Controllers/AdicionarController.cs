@@ -21,7 +21,7 @@ namespace WebApplicationMVC.Areas.GestaoFilmes.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var produtora = new Produtora()
+            /*var produtora = new Produtora()
             {
                 NomeProdutora = "Paramount",
                 ValorPatrimonial = (decimal) 10000.00,
@@ -49,6 +49,7 @@ namespace WebApplicationMVC.Areas.GestaoFilmes.Controllers
             _context.SaveChanges();
             _context.Remove(disney);
             _context.SaveChanges();
+            */
             
             return View();
         }

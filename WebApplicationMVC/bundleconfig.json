@@ -1,0 +1,20 @@
+﻿[
+{
+  "outputFileName": "wwwroot/bundle/font.min.css",
+  "inputFiles": ["wwwroot/css/all.css","wwwroot/css/fontawesome.css"]
+},
+{
+  "outputFileName": "wwwroot/bundle/bootstrap.min.css",
+  "inputFiles": [ "wwwroot/css/bootstrap.css", "wwwroot/css/bootstrap-grid.css", "wwwroot/css/bootstrap-reboot.css" ]
+}, {
+  "outputFileName": "wwwroot/bundle/jqueryValidation.min.js",
+  "inputFiles": ["wwwroot/lib/jquery-validation/dist/jquery.validate.js",
+    "wwwroot/lib/jquery-validation/dist/additional-methods.js"]
+}, {
+  "outputFileName": "wwwroot/bundle/jqueryValidationUno.min.js",
+  "inputFiles": ["wwwroot/lib/jquery-validation-unobtrusive/jquery.validation.unobtrusive.js"]
+}, {
+  "outputFileName": "wwwroot/bundle/font.min.js",
+  "inputFiles": ["wwwroot/js/all.js","wwwroot/js/fontawesome.js"]
+}
+]

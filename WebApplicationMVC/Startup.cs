@@ -1,32 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using KissLog.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using WebApplicationMVC.ConfigStartup;
 
 namespace WebApplicationMVC
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IHostEnvironment hostEnvironment)
         {
-            Configuration = configuration;
-        }
+            IConfigurationBuilder builder = new ConfigurationBuilder().SetBasePath(hostEnvironment.ContentRootPath)
+                .AddJsonFile("appsettings.json", true, true)
+                .AddJsonFile($"appsettings.{hostEnvironment.EnvironmentName}.json")
+                .AddEnvironmentVariables();
+            if (hostEnvironment.IsProduction())
+            {
+                builder.AddUserSecrets<Startup>();
+            }
+            Configuration = builder.Build();
+        }   
 
         public IConfiguration Configuration { get; }
-
-        // This method gets called by the runtime. Use this method to add services to the container.
+        
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
+            //services.AddAreas();
+            services.AddIdentity();
+            services.AddDbContext(Configuration);
+            services.AddDependency();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -36,22 +42,30 @@ namespace WebApplicationMVC
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
+            //app.UseMiddleware<MeuMiddleware>();
+            //app.useMeuMiddleware();
+            app.UseKissLogMiddleware(options => {
+                KissLogConfig.ConfigureKissLog(options, Configuration);
+            });
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapAreaControllerRoute("AreaGestaoFilmes", "GestaoFilmes",
+                    "{controller=Adicionar}/{action=Index}/");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapRazorPages();
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
